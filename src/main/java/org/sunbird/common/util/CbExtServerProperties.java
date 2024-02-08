@@ -638,6 +638,9 @@ public class CbExtServerProperties {
 	@Value("${redis.ehrms.token.timeout}")
 	private Integer redisEhrmsTokenTimeOut;
 
+	@Value("${user.registration.welcome.email.profileUpdateLink}")
+	private String welcomeEmailProfileUpdateLink;
+
 	public boolean qListFromCacheEnabled() {
 		return qListFromCacheEnabled;
 	}
@@ -2195,6 +2198,14 @@ public class CbExtServerProperties {
 
 	public void setCbplanContentRequestKafkaTopic(String cbplanContentRequestKafkaTopic) {
 		this.cbplanContentRequestKafkaTopic = cbplanContentRequestKafkaTopic;
+	}
+
+	public String getWelcomeEmailProfileUpdateLink() {
+		return welcomeEmailProfileUpdateLink;
+	}
+
+	public void setWelcomeEmailProfileUpdateLink(String welcomeEmailProfileUpdateLink) {
+		this.welcomeEmailProfileUpdateLink = welcomeEmailProfileUpdateLink;
 	}
 
 	public String getNotifyServiceHost() {

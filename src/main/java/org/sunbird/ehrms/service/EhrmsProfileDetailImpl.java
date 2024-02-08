@@ -60,10 +60,10 @@ public class EhrmsProfileDetailImpl implements EhrmsService {
             String externalSystemId = null;
             if (result != null && !result.isEmpty()) {
                 String userProfileDetails = (String) ((Map<String, Object>) result.get(userId)).get(Constants.PROFILE_DETAILS_LOWER);
-                logger.info("User Profile Details : " + userProfileDetails);
+                logger.info("User Profile Details : {} " , userProfileDetails);
                 Map<String, Object> userDetails = mapper.readValue(userProfileDetails, new TypeReference<Map<String, Object>>() {
                 });
-                logger.info("User Details : " + userDetails);
+                logger.info("User Details :{} " , userDetails);
                 Map<String, Object> userAdditionalProperties = ((Map<String, Object>) userDetails.get(Constants.ADDITIONAL_PROPERTIES));
                 if (userAdditionalProperties != null && !userAdditionalProperties.isEmpty()) {
                     externalSystemId = (String) userAdditionalProperties.get(Constants.EXTERNAL_SYSTEM_ID);
