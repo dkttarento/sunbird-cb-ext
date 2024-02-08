@@ -59,11 +59,6 @@ public class CohortsServiceImpl implements CohortsService {
 
 	@Override
 	public List<CohortUsers> getTopPerformers(String rootOrg, String contentId, String userId, int count) {
-		// Check User exists
-// 		if (!userUtilService.validateUser(rootOrg, userId)) {
-// 			throw new BadRequestException("Invalid UserId.");
-// 		}
-
 		// This contains the list of all the children for provided course(resourceId) if
 		// it is a learning-path.
 		// Else, it will contain the parents for provided course(resourceId)
@@ -134,15 +129,11 @@ public class CohortsServiceImpl implements CohortsService {
 	public List<CohortUsers> getActiveUsers(String xAuthUser, String rootOrgId, String rootOrg, String contentId, String userId,
 			int count, Boolean toFilter) throws Exception {
 		// Check User exists
-// 		if (!userUtilService.validateUser(rootOrg, userId)) {
-// 			throw new BadRequestException("Invalid UserId.");
-// 		}
 		List<String> batchIdList = null;
 		try {
 			List<SunbirdApiBatchResp> batches = fetchBatchDetails(rootOrgId, contentId);
 			if (!CollectionUtils.isEmpty(batches)) {
 				batchIdList = batches.stream().map(SunbirdApiBatchResp::getBatchId).collect(Collectors.toList());
-				//List<String> batchIdList = fetchBatchIdDetails(contentId);
 				if (!CollectionUtils.isEmpty(batchIdList)) {
 					return fetchParticipantsList(xAuthUser, rootOrg, batchIdList, count);
 				}
@@ -190,7 +181,7 @@ public class CohortsServiceImpl implements CohortsService {
 						boolean isUserEnrolled = false;
 						for (SunbirdApiBatchResp batch : batchResp) {
 							if (StringUtils.isEmpty(batch.getEndDate())) {
-								Map<String,Object> enrollResponse = new HashMap<>();
+								Map<String,Object> enrollResponse;
 								enrollResponse = enrollInCourse(contentId, userUUID, headers, batch.getBatchId());
 								if (!ObjectUtils.isEmpty(enrollResponse) && Constants.OK.equalsIgnoreCase((String) enrollResponse.get(Constants.RESPONSE_CODE))) {
 									finalResponse = constructAutoEnrollResponse(batch);
@@ -210,7 +201,7 @@ public class CohortsServiceImpl implements CohortsService {
 					boolean isUserEnrolled = false;
 					for (SunbirdApiBatchResp batch : batchResp) {
 						if (StringUtils.isEmpty(batch.getEndDate())) {
-							Map<String,Object> enrollResponse = new HashMap<>();
+							Map<String,Object> enrollResponse;
 							enrollResponse = enrollInCourse(contentId, userUUID, headers, batch.getBatchId());
 							if (!ObjectUtils.isEmpty(enrollResponse) && Constants.OK == enrollResponse.get(Constants.RESPONSE_CODE)) {
 								finalResponse = constructAutoEnrollResponse(batch);

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.sunbird.assessment.service.OffensiveDataFlagService;
+import org.sunbird.common.exceptions.ProjectCommonException;
 import org.sunbird.common.model.SBApiResponse;
 import org.sunbird.common.util.Constants;
 
@@ -18,7 +19,7 @@ public class OffensiveDataReportController {
 
 	@PostMapping("/v1/offensive/data/flag")
 	public ResponseEntity<SBApiResponse> createFlag(
-			@Valid @RequestBody Map<String, Object> requestBody, @RequestHeader(Constants.X_AUTH_TOKEN) String token) throws Exception {
+			@Valid @RequestBody Map<String, Object> requestBody, @RequestHeader(Constants.X_AUTH_TOKEN) String token) throws ProjectCommonException {
 		SBApiResponse readResponse = offensiveDataFlagService.createFlag(requestBody, token);
 		return new ResponseEntity<>(readResponse, readResponse.getResponseCode());
 	}
@@ -31,7 +32,7 @@ public class OffensiveDataReportController {
 	}
 
 	@GetMapping("/v1/offensive/data/flag/getFlaggedData")
-	public ResponseEntity<SBApiResponse> getFlaggedData(@RequestHeader(Constants.X_AUTH_TOKEN) String token) throws Exception {
+	public ResponseEntity<SBApiResponse> getFlaggedData(@RequestHeader(Constants.X_AUTH_TOKEN) String token) throws ProjectCommonException {
 		SBApiResponse readResponse = offensiveDataFlagService.getFlaggedData(token);
 		return new ResponseEntity<>(readResponse, readResponse.getResponseCode());
 	}

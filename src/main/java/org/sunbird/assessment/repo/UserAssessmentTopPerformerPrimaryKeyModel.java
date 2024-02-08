@@ -79,7 +79,6 @@ public class UserAssessmentTopPerformerPrimaryKeyModel implements Serializable {
 		this.tsCreated = tsCreated;
 		this.resultPercent = resultPercent;
 		this.id = id;
-		this.rootOrg = rootOrg;
 	}
 
 	@Override

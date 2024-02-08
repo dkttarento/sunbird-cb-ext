@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.sunbird.assessment.dto.AssessmentSubmissionDTO;
 import org.sunbird.cassandra.utils.CassandraOperation;
+import org.sunbird.common.exceptions.ProjectCommonException;
 import org.sunbird.common.model.SBApiResponse;
 import org.sunbird.common.util.Constants;
 import org.sunbird.core.logger.CbExtLogger;
@@ -46,13 +47,13 @@ public class AssessmentRepositoryImpl implements AssessmentRepository {
 	SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 
 	@Override
-	public Map<String, Object> getAssessmentAnswerKey(String artifactUrl) throws Exception {
+	public Map<String, Object> getAssessmentAnswerKey(String artifactUrl) throws ProjectCommonException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Map<String, Object> getQuizAnswerKey(AssessmentSubmissionDTO quizMap) throws Exception {
+	public Map<String, Object> getQuizAnswerKey(AssessmentSubmissionDTO quizMap) throws ProjectCommonException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -130,7 +131,7 @@ public class AssessmentRepositoryImpl implements AssessmentRepository {
 
 	@Override
 	public List<Map<String, Object>> getAssessmentbyContentUser(String rootOrg, String courseId, String userId)
-			throws Exception {
+			throws ProjectCommonException {
 		// TODO Auto-generated method stub
 		return Collections.emptyList();
 	}

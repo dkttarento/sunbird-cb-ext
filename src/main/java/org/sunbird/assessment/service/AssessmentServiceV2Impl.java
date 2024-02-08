@@ -70,11 +70,11 @@ public class AssessmentServiceV2Impl implements AssessmentServiceV2 {
         try {
             String userId = validateAuthTokenAndFetchUserId(token);
             if (userId != null) {
-                logger.info("readAssessment.. userId :" + userId);
+                logger.info("readAssessment.. userId : {}" + userId);
                 Map<String, Object> assessmentAllDetail = new HashMap<>();
                 errMsg = fetchReadHierarchyDetails(assessmentAllDetail, token, assessmentIdentifier);
                 if (errMsg.isEmpty() && !((String) assessmentAllDetail.get(Constants.PRIMARY_CATEGORY)).equalsIgnoreCase(Constants.PRACTICE_QUESTION_SET)) {
-                    logger.info("Fetched assessment Details... for : " + assessmentIdentifier);
+                    logger.info("Fetched assessment Details... for : {}" + assessmentIdentifier);
                     List<Map<String, Object>> existingDataList = assessmentRepository.fetchUserAssessmentDataFromDB(userId, assessmentIdentifier);
                     Timestamp assessmentStartTime = new Timestamp(new java.util.Date().getTime());
                     if (existingDataList.isEmpty()) {
@@ -214,15 +214,14 @@ public class AssessmentServiceV2Impl implements AssessmentServiceV2 {
                 }));
             } else {
                 Map<String, Object> readHierarchyApiResponse = assessUtilServ.getReadHierarchyApiResponse(assessmentIdentifier, token);
-                if (!readHierarchyApiResponse.isEmpty())
-                    if (ObjectUtils.isEmpty(readHierarchyApiResponse) || !Constants.OK.equalsIgnoreCase((String) readHierarchyApiResponse.get(Constants.RESPONSE_CODE))) {
-                        return Constants.ASSESSMENT_HIERARCHY_READ_FAILED;
-                    }
+                if (!readHierarchyApiResponse.isEmpty() && ObjectUtils.isEmpty(readHierarchyApiResponse) || !Constants.OK.equalsIgnoreCase((String) readHierarchyApiResponse.get(Constants.RESPONSE_CODE))) {
+                    return Constants.ASSESSMENT_HIERARCHY_READ_FAILED;
+                }
                 assessmentAllDetail.putAll((Map<String, Object>) ((Map<String, Object>) readHierarchyApiResponse.get(Constants.RESULT)).get(Constants.QUESTION_SET));
                 redisCacheMgr.putCache(Constants.ASSESSMENT_ID + assessmentIdentifier, ((Map<String, Object>) readHierarchyApiResponse.get(Constants.RESULT)).get(Constants.QUESTION_SET));
             }
         } catch (Exception e) {
-            logger.info("Error while fetching or mapping read hierarchy data" + e.getMessage());
+            logger.info("Error while fetching or mapping read hierarchy data: {}" + e.getMessage());
             return Constants.ASSESSMENT_HIERARCHY_READ_FAILED;
         }
         return StringUtils.EMPTY;
@@ -433,12 +432,11 @@ public class AssessmentServiceV2Impl implements AssessmentServiceV2 {
                             ObjectMapper m = new ObjectMapper();
                             Map<String, Object> props = m.convertValue(map, Map.class);
                             kafkaResult.put(Constants.COMPETENCY, props.isEmpty() ? "" : props);
-                            System.out.println(obj);
+                           logger.info(Arrays.toString(obj));
 
                         }
-                        System.out.println(obj);
+                        logger.info(Arrays.toString(obj));
                     }
-                    logger.info(kafkaResult.toString());
                     kafkaProducer.push(serverProperties.getAssessmentSubmitTopic(), kafkaResult);
                 }
             }

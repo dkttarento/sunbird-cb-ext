@@ -1,8 +1,6 @@
 package org.sunbird.user.report;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +15,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.sunbird.common.model.SBApiResponse;
 import org.sunbird.common.util.Constants;
@@ -33,16 +32,15 @@ public class UserReportServiceImpl implements UserReportService {
 			SBApiResponse response) {
 		log.info("UserReportServiceImpl:: generateUserEnrolmentReport started");
 		long startTime = System.currentTimeMillis();
-
-		Workbook wb = new XSSFWorkbook();
-		Sheet sheet = wb.createSheet("KarmayogiBharat User Enrolment Details");
-		int rowNum = 0;
-		Row row = sheet.createRow(rowNum++);
-		int cellNum = 0;
-		for (String fieldName : fields) {
-			Cell cell = row.createCell(cellNum++);
-			cell.setCellValue(fieldName);
-		}
+		try (Workbook wb = new XSSFWorkbook()) {
+			Sheet sheet = wb.createSheet("KarmayogiBharat User Enrolment Details");
+			int rowNum = 0;
+			Row row = sheet.createRow(rowNum++);
+			int cellNum = 0;
+			for (String fieldName : fields) {
+				Cell cell = row.createCell(cellNum++);
+				cell.setCellValue(fieldName);
+			}
 
 		Iterator<Entry<String, Map<String, String>>> it = userEnrolmentMap.entrySet().iterator();
 		while (it.hasNext()) {
@@ -72,9 +70,14 @@ public class UserReportServiceImpl implements UserReportService {
 			wb.close();
 			response.getResult().put(Constants.FILE_NAME, fileName);
 		} catch (Exception e) {
+			log.error("Error in generating user enrolment report: ", e);
+			response.getParams().setStatus(Constants.FAILED);
+			response.getParams().setErrmsg("Error in generating user enrolment report: " + e.getMessage());
+			response.setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		} catch (Exception e) {
 			log.error("Failed to write the workbook created for UserEnrolment Report. Exception: ", e);
 		}
-
 		log.info(String.format(
 				"UserReportServiceImpl:: generateUserEnrolmentReport started and it took %s seconds to complete.",
 				(System.currentTimeMillis() - startTime) / 1000));

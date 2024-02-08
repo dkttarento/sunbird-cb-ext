@@ -13,6 +13,7 @@ import org.sunbird.assessment.dto.AssessmentSubmissionDTO;
 import org.sunbird.assessment.service.AssessmentService;
 import org.sunbird.assessment.service.AssessmentServiceV2;
 import org.sunbird.assessment.service.AssessmentServiceV4;
+import org.sunbird.common.exceptions.ProjectCommonException;
 import org.sunbird.common.model.SBApiResponse;
 import org.sunbird.common.util.Constants;
 
@@ -111,7 +112,7 @@ public class AssessmentController {
 	@GetMapping("/v2/{courseId}/assessment/{assessmentContentId}")
 	public ResponseEntity<Map<String, Object>> getAssessmentContent(@PathVariable("courseId") String courseId,
 			@PathVariable("assessmentContentId") String assessmentContentId, @RequestHeader("rootOrg") String rootOrg)
-			throws Exception {
+			throws ProjectCommonException {
 		return new ResponseEntity<>(assessmentService.getAssessmentContent(courseId, assessmentContentId),
 				HttpStatus.OK);
 	}

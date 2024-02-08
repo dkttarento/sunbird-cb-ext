@@ -85,11 +85,11 @@ public class OutboundRequestHandlerServiceImpl {
 						});
 			} catch (Exception e1) {
 			}
-			log.error("Error received: " + e.getResponseBodyAsString(), e);
+			log.error("Error received: %s" + e.getResponseBodyAsString(), e);
 		} catch (Exception e) {
 			log.error(e);
 			try {
-				log.warn("Error Response: " + mapper.writeValueAsString(response));
+				log.warn("Error Response: %s" + mapper.writeValueAsString(response));
 			} catch (Exception e1) {
 			}
 		}
@@ -121,8 +121,6 @@ public class OutboundRequestHandlerServiceImpl {
 			return response.getBody();
 		} catch (HttpClientErrorException e) {
 			log.error(e);
-		} catch (Exception e) {
-			log.error(e);
 		}
 		return null;
 	}
@@ -151,7 +149,7 @@ public class OutboundRequestHandlerServiceImpl {
 						});
 			} catch (Exception e1) {
 			}
-			log.error("Error received: " + e.getResponseBodyAsString(), e);
+			log.error("Error received: %s" + e.getResponseBodyAsString(), e);
 		} catch (Exception e) {
 			log.error(e);
 			try {

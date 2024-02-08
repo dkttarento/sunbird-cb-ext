@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.sunbird.assessment.dto.AssessmentSubmissionDTO;
+import org.sunbird.common.exceptions.ProjectCommonException;
 
 public interface AssessmentRepository {
 
@@ -16,7 +17,7 @@ public interface AssessmentRepository {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, Object> getAssessmentAnswerKey(String artifactUrl) throws Exception;
+	public Map<String, Object> getAssessmentAnswerKey(String artifactUrl) throws ProjectCommonException;
 
 	/**
 	 * gets answerkey for the quiz submission
