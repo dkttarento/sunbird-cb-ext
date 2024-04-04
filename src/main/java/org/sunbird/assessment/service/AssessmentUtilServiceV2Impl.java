@@ -24,8 +24,6 @@ import org.sunbird.common.util.Constants;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import static org.sunbird.common.util.Constants.INSIGHTS_LEARNING_HOURS_REDIS_KEY;
-
 @Service
 public class AssessmentUtilServiceV2Impl implements AssessmentUtilServiceV2 {
 

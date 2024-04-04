@@ -27,7 +27,6 @@ import org.sunbird.common.util.Constants;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.sunbird.ratings.exception.ValidationException;
 
 @Service
 public class BudgetServiceImpl implements BudgetService {
