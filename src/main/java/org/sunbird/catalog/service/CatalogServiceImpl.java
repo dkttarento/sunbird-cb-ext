@@ -20,7 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class CatalogServiceImpl {
 
-	private Logger log = LoggerFactory.getLogger(CatalogServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(CatalogServiceImpl.class);
 
 	@Autowired
 	RestTemplate restTemplate;

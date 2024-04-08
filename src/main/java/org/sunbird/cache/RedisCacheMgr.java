@@ -34,7 +34,7 @@ public class RedisCacheMgr {
     @Autowired
     CbExtServerProperties cbExtServerProperties;
 
-    private CbExtLogger logger = new CbExtLogger(getClass().getName());
+    private final CbExtLogger logger = new CbExtLogger(getClass().getName());
     
     ObjectMapper objectMapper = new ObjectMapper();
 

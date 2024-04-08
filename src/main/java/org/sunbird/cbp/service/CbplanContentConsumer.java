@@ -26,7 +26,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class CbplanContentConsumer {
 
-    private CbExtLogger logger = new CbExtLogger(getClass().getName());
+    private final CbExtLogger logger = new CbExtLogger(getClass().getName());
 
     @Autowired
     PropertiesConfig configuration;
@@ -34,7 +34,7 @@ public class CbplanContentConsumer {
     @Autowired
     private OutboundRequestHandlerServiceImpl outboundReqService;
 
-    private ObjectMapper mapper = new ObjectMapper();
+    private final ObjectMapper mapper = new ObjectMapper();
 
     @Autowired
     CassandraOperation cassandraOperation;
