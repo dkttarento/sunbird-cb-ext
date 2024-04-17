@@ -1014,6 +1014,15 @@ public class Constants {
 	public static final String API_SECTOR_LIST = "api.sector.list";
 	public static final String TERMS = "terms";
 	public static final String SECTORS = "sectors";
+	public static final String API_SECTOR_READ = "api.read.sector";
+	public static final String API_SECTOR_CREATE = "api.create.sector";
+	public static final String API_SUB_SECTOR_CREATE = "api.create.sub.sector";
+	public static final String TERM = "term";
+	public static final String SECTOR = "sector";
+	public static final String IMG_URL_KEY = "imgUrl";
+	public static final String CODE = "code";
+	public static final String PARENTS = "parents";
+	public static final String SUB_SECTORS = "subsectors";
 	public static final String API_CALENDAR_EVENT_BULK_UPLOAD = "api.calendar.event.bulk.upload";
 	public static final String TABLE_CALENDAR_EVENT_BULK_UPLOAD = "calendar_event_bulk_upload";
 	public static final String EVENT = "event";
@@ -1029,7 +1038,7 @@ public class Constants {
 	public static final String EVENT_KEY = "Event";
 	public static final String SLASH = "/";
 
-  private Constants() {
+	private Constants() {
 		throw new IllegalStateException("Utility class");
 	}
 
