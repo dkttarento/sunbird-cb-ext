@@ -711,6 +711,9 @@ public class CbExtServerProperties {
 	@Value("${km.framework.term.create.path}")
 	private String kmFrameworkTermCreatePath;
 
+	@Value("${sector.framework.name}")
+	private String sectorFrameworkName;
+
 	@Value("${kafka.topics.calendar.bulk.upload.event}")
 	private String calendarEventBulkUploadTopic;
 
@@ -2526,6 +2529,14 @@ public class CbExtServerProperties {
 
 	public void setKmFrameworkTermCreatePath(String kmFrameworkTermCreatePath) {
 		this.kmFrameworkTermCreatePath = kmFrameworkTermCreatePath;
+	}
+
+	public String getSectorFrameworkName() {
+		return sectorFrameworkName;
+	}
+
+	public void setSectorFrameworkName(String sectorFrameworkName) {
+		this.sectorFrameworkName = sectorFrameworkName;
 	}
 
 	public String getCalendarEventBulkUploadTopic() {
