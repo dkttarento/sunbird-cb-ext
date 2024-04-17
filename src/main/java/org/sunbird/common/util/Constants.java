@@ -1034,7 +1034,6 @@ public class Constants {
 	public static final String CALENDAR = "Calendar";
 	public static final String RESOURCE_TYPE = "resourceType";
 	public static final String REGISTRATION_END_DATE = "registrationEndDate";
-	public static final String CODE = "code";
 	public static final String EVENT_KEY = "Event";
 	public static final String SLASH = "/";
 
