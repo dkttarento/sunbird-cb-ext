@@ -112,7 +112,6 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
             uploadedFile.put(Constants.ORG_NAME, channelName);
             uploadedFile.put(Constants.X_AUTH_TOKEN, userAuthToken);
             kafkaProducer.pushWithKey(serverConfig.getCalendarEventBulkUploadTopic(), uploadedFile, orgId);
-            //sendBulkUploadNotification(orgId, channel, (String) uploadResponse.getResult().get(Constants.URL));
         } catch (Exception e) {
             setErrorData(response,
                     String.format("Failed to process calendar Event bulk upload request. Error: ", e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -336,6 +335,7 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
                     eventInfoMap.put(Constants.RESOURCE_TYPE, "Webinar");
                     eventInfoMap.put(Constants.CREATED_FOR, Arrays.asList(inputDataMap.get(Constants.ROOT_ORG_ID)));
                     eventInfoMap.put(Constants.CODE, "Calendar Event");
+                    eventInfoMap.put(Constants.CHANNEL, inputDataMap.get(Constants.ROOT_ORG_ID));
                     Cell statusCell = nextRow.getCell(9);
                     Cell errorDetails = nextRow.getCell(10);
                     if (statusCell == null) {
