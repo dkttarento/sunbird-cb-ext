@@ -236,6 +236,8 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
                     List<String> errList = new ArrayList<>();
                     List<String> invalidErrList = new ArrayList<>();
                     Map<String, Object> eventInfoMap = new HashMap<>();
+                    Date startDate = null;
+                    Date endDate = null;
                     Row nextRow = rowIterator.next();
                     if (nextRow.getCell(0) == null || nextRow.getCell(0).getCellType() == CellType.BLANK) {
                         errList.add("Training name");
@@ -277,24 +279,25 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
                         errList.add("Start date");
                     } else {
                         if (nextRow.getCell(4).getCellType() == CellType.NUMERIC) {
-                            Date startDate = DateUtil.getJavaDate(nextRow.getCell(4).getNumericCellValue());
+                            startDate = DateUtil.getJavaDate(nextRow.getCell(4).getNumericCellValue());
                             eventInfoMap.put(Constants.START_DATE, dateFormat.format(startDate));
                             eventInfoMap.put(Constants.REGISTRATION_END_DATE, dateFormat.format(startDate));
                         } else {
-                            invalidErrList.add("Invalid column type. Expecting string format");
+                            invalidErrList.add("Invalid column type. Expecting Date format in DD/MM/YYYY");
                         }
                     }
                     if (nextRow.getCell(5) == null || nextRow.getCell(5).getCellType() == CellType.BLANK) {
                         errList.add("End date");
                     } else {
-                        CellType type = nextRow.getCell(5).getCellType();
-                        logger.info(type.name());
                         if (nextRow.getCell(5).getCellType() == CellType.NUMERIC) {
-                            Date endDate = DateUtil.getJavaDate(nextRow.getCell(5).getNumericCellValue());
+                            endDate = DateUtil.getJavaDate(nextRow.getCell(5).getNumericCellValue());
                             eventInfoMap.put(Constants.END_DATE, dateFormat.format(endDate));
                         } else {
-                            invalidErrList.add("Invalid column type. Expecting string format");
+                            invalidErrList.add("Invalid column type. Expecting Date format in DD/MM/YYYY");
                         }
+                    }
+                    if (endDate != null && startDate != null && endDate.before(startDate)) {
+                        invalidErrList.add("End Date should be equal to or greater than startDate.");
                     }
                     if (nextRow.getCell(6) == null || nextRow.getCell(6).getCellType() == CellType.BLANK) {
                         errList.add("Start time");
@@ -303,7 +306,7 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
                             Date eventStartTime = DateUtil.getJavaDate(nextRow.getCell(6).getNumericCellValue());
                             eventInfoMap.put(Constants.START_TIME_KEY, sdf.format(eventStartTime.getTime()));
                         } else {
-                            invalidErrList.add("Invalid column type. Expecting string format");
+                            invalidErrList.add("Invalid column type. Expecting Time format HH:mm:ss");
                         }
                     }
                     if (nextRow.getCell(7) == null || nextRow.getCell(7).getCellType() == CellType.BLANK) {
@@ -313,7 +316,7 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
                             Date eventEndTime = DateUtil.getJavaDate(nextRow.getCell(7).getNumericCellValue());
                             eventInfoMap.put(Constants.END_TIME_KEY, sdf.format(eventEndTime.getTime()));
                         } else {
-                            invalidErrList.add("Invalid column type. Expecting string format");
+                            invalidErrList.add("Invalid column type. Expecting Time format HH:mm:ss");
                         }
                     }
                     if (nextRow.getCell(8) == null || nextRow.getCell(8).getCellType() == CellType.BLANK) {
