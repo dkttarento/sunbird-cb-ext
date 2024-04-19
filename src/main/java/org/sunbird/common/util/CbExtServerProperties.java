@@ -714,6 +714,9 @@ public class CbExtServerProperties {
 	@Value("${sector.framework.name}")
 	private String sectorFrameworkName;
 
+	@Value("${domain.url}")
+	private String domainUrl;
+
 	@Value("${kafka.topics.calendar.bulk.upload.event}")
 	private String calendarEventBulkUploadTopic;
 
@@ -2538,6 +2541,11 @@ public class CbExtServerProperties {
 	public void setSectorFrameworkName(String sectorFrameworkName) {
 		this.sectorFrameworkName = sectorFrameworkName;
 	}
+
+	public void setDomainUrl(String domainUrl) {this.domainUrl = domainUrl;}
+
+	public String getDomainUrl() {return domainUrl;}
+
 
 	public String getCalendarEventBulkUploadTopic() {
 		return calendarEventBulkUploadTopic;
