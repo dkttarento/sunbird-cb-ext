@@ -325,7 +325,7 @@ public class CalendarBulkUploadServiceImpl implements CalendarBulkUploadService 
                         if (nextRow.getCell(8).getCellType() == CellType.STRING) {
                             Map<String, Object> eventVenueInfo = new HashMap<>();
                             eventVenueInfo.put(Constants.ADDRESS, nextRow.getCell(8).getStringCellValue().trim());
-                            eventInfoMap.put(Constants.VENUE, eventVenueInfo);
+                            eventInfoMap.put(Constants.LOCATION, eventVenueInfo);
                         } else {
                             invalidErrList.add("Invalid column type. Expecting string format");
                         }

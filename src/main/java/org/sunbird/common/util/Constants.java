@@ -1030,7 +1030,7 @@ public class Constants {
 	public static final String REGISTRATION_LINK = "registrationLink";
 	public static final String EVENT_TYPE = "eventType";
 	public static final String ADDRESS = "address";
-	public static final String VENUE = "venue";
+	public static final String LOCATION = "location";
 	public static final String SOURCE_NAME = "sourceName";
 	public static final String CALENDAR = "Calendar";
 	public static final String RESOURCE_TYPE = "resourceType";
