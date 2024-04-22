@@ -705,6 +705,33 @@ public class CbExtServerProperties {
 	@Value("${sector.category.name}")
 	private String sectorCategoryName;
 
+	@Value("${km.framework.term.read.path}")
+	private String kmFrameworkTermReadPath;
+
+	@Value("${km.framework.term.create.path}")
+	private String kmFrameworkTermCreatePath;
+
+	@Value("${sector.framework.name}")
+	private String sectorFrameworkName;
+
+	@Value("${domain.url}")
+	private String domainUrl;
+
+	@Value("${kafka.topics.calendar.bulk.upload.event}")
+	private String calendarEventBulkUploadTopic;
+
+	@Value("${event-create-api}")
+	private String eventCreateAPI;
+
+	@Value("${event-publish-api}")
+	private String eventPublishAPI;
+
+	@Value("${calendar.bulk.upload.container.name}")
+	private String calendarEventBulkUploadContainerName;
+
+	@Value("${event-update-api}")
+	private String eventUpdateAPI;
+
 	@Value("${redis.dashboard.course.live.count.index}")
 	private Integer redisDashboardCourseLiveCount;
 
@@ -2516,6 +2543,75 @@ public class CbExtServerProperties {
 
 	public void setSubSectorFields(String subSectorFields) {
 		this.subSectorFields = subSectorFields;
+	}
+
+	public String getKmFrameworkTermReadPath() {
+		return kmFrameworkTermReadPath;
+	}
+
+	public void setKmFrameworkTermReadPath(String kmFrameworkTermReadPath) {
+		this.kmFrameworkTermReadPath = kmFrameworkTermReadPath;
+	}
+
+	public String getKmFrameworkTermCreatePath() {
+		return kmFrameworkTermCreatePath;
+	}
+
+	public void setKmFrameworkTermCreatePath(String kmFrameworkTermCreatePath) {
+		this.kmFrameworkTermCreatePath = kmFrameworkTermCreatePath;
+	}
+
+	public String getSectorFrameworkName() {
+		return sectorFrameworkName;
+	}
+
+	public void setSectorFrameworkName(String sectorFrameworkName) {
+		this.sectorFrameworkName = sectorFrameworkName;
+	}
+
+	public void setDomainUrl(String domainUrl) {this.domainUrl = domainUrl;}
+
+	public String getDomainUrl() {return domainUrl;}
+
+
+	public String getCalendarEventBulkUploadTopic() {
+		return calendarEventBulkUploadTopic;
+	}
+
+	public void setCalendarEventBulkUploadTopic(String calendarEventBulkUploadTopic) {
+		this.calendarEventBulkUploadTopic = calendarEventBulkUploadTopic;
+	}
+
+	public String getEventCreateAPI() {
+		return eventCreateAPI;
+	}
+
+	public void setEventCreateAPI(String eventCreateAPI) {
+		this.eventCreateAPI = eventCreateAPI;
+	}
+
+	public String getEventPublishAPI() {
+		return eventPublishAPI;
+	}
+
+	public void setEventPublishAPI(String eventPublishAPI) {
+		this.eventPublishAPI = eventPublishAPI;
+	}
+
+	public String getCalendarEventBulkUploadContainerName() {
+		return calendarEventBulkUploadContainerName;
+	}
+
+	public void setCalendarEventBulkUploadContainerName(String calendarEventBulkUploadContainerName) {
+		this.calendarEventBulkUploadContainerName = calendarEventBulkUploadContainerName;
+	}
+
+	public String getEventUpdateAPI() {
+		return eventUpdateAPI;
+	}
+
+	public void setEventUpdateAPI(String eventUpdateAPI) {
+		this.eventUpdateAPI = eventUpdateAPI;
 	}
 
 	public Integer getRedisDashboardCourseLiveCount() {
