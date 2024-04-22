@@ -1014,8 +1014,19 @@ public class Constants {
 	public static final String API_SECTOR_LIST = "api.sector.list";
 	public static final String TERMS = "terms";
 	public static final String SECTORS = "sectors";
+	public static final String API_MICRO_SITE_INSIGHTS ="api.micro-site.insights";
+	public static final String ACROSS = "across";
+	public static final String DASHBOARD_LIVE_COURSE_COUNT ="dashboard_live_course_count_by_course_org";
+	public static final String DASHBOARD_CERTIFICATES_GENERATED_BY_COURSE ="dashboard_certificates_generated_count_by_course_org";
+	public static final String DASHBOARD_COURSE_AVG_RATING ="dashboard_course_average_rating_by_course_org";
+	public static final String DASHBOARD_ENROLMENT_COUNT_BY_COURSE ="dashboard_enrolment_count_by_course_org";
+	public static final String DASHBOARD_COMPETENCIES_COUNT_BY_COURSE ="dashboard_competencies_count_by_course_org";
+	public static final String TOTAL_CONTENT ="total-content";
+	public static final String AVG_RATING_MICRO_SITE="avg-rating";
+	public static final String TOTAL_ENROLMENTS ="total-enrolments";
+	public static final String TOTAL_CERTIFICATES ="total-certificates";
 
-  private Constants() {
+	private Constants() {
 		throw new IllegalStateException("Utility class");
 	}
 
