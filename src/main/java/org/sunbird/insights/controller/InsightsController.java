@@ -21,7 +21,7 @@ public class InsightsController {
         return new ResponseEntity<>(response, response.getResponseCode());
     }
 
-    @PostMapping("/micro-site/read/insights")
+    @PostMapping("/microsite/read/insights")
     public ResponseEntity<SBApiResponse> readInsights(
             @RequestBody Map<String, Object> requestBody,@RequestHeader(X_AUTH_USER_ID) String userId) throws Exception {
         SBApiResponse response = insightsService.readInsights(requestBody,userId);
