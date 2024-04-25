@@ -4,8 +4,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.sunbird.common.util.Constants;
-import java.util.*;
 import static org.sunbird.common.util.Constants.*;
+import java.util.*;
 @RestController
 public class TrendingController {
 
