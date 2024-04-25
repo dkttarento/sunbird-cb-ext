@@ -21,7 +21,7 @@ public class TrendingController {
         return new ResponseEntity<>(compositeSearchRes, HttpStatus.OK);
     }
 
-    @PostMapping("admin/trending/content/search")
+    @PostMapping("/microsite/topFeatured/content/search")
     public ResponseEntity<Map<String, Object>> trendingContentSearch(
             @RequestBody Map<String, Object> requestBody,
             @RequestHeader(X_AUTH_TOKEN) String token,@RequestHeader(X_AUTH_USER_ORG_ID)String userOrgId) throws Exception {
