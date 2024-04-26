@@ -151,15 +151,15 @@ public class InsightsServiceImpl implements InsightsService {
         HashMap<String, Object> request = requestBody.get(REQUEST) == null ? new HashMap<>() : (HashMap<String, Object>) requestBody.get(REQUEST);
         HashMap<String, Object> filter = request.get(FILTERS) == null ? new HashMap<>() : ((HashMap<String, Object>) request.get(FILTERS));
         ArrayList<String> organizations = filter.get(ORGANISATIONS) ==null ? new ArrayList<>() : (ArrayList<String>) (filter.get(ORGANISATIONS));
-        ArrayList<String> keys = nudgeKeys(organizations);
-        String[] fieldsArray = keys.toArray(new String[keys.size()]);
+        String[] fieldsArray = organizations.toArray(new String[0]);
+        Arrays.sort(fieldsArray);
         ArrayList<String> certificateOrgs= new ArrayList<>();
         certificateOrgs.add(ACROSS);
         ArrayList<Object> nudges = new ArrayList<>();
-        List<String> competenciesByCourse =  redisCacheMgr.hget(DASHBOARD_COMPETENCIES_COUNT_BY_COURSE, serverProperties.getRedisDashboardCompetenciesCount(),fieldsArray);
-        List<String> certificatesByCourse = redisCacheMgr.hget(DASHBOARD_CERTIFICATES_GENERATED_BY_COURSE, serverProperties.getRedisDashboardCertificateCount(),fieldsArray);
-        List<String> avgRatingByCourse = redisCacheMgr.hget(DASHBOARD_COURSE_AVG_RATING, serverProperties.getRedisDashboardCourseAverageRatingCount(),fieldsArray);
-        List<String> enrolmentByCourse = redisCacheMgr.hget(DASHBOARD_ENROLMENT_COUNT_BY_COURSE, serverProperties.getRedisDashboardEnrolmentCount(),fieldsArray);
+        List<String> competenciesByCourse =  redisCacheMgr.hget(DASHBOARD_COMPETENCIES_COUNT_BY_COURSE, serverProperties.getRedisInsightIndex(), fieldsArray);
+        List<String> certificatesByCourse = redisCacheMgr.hget(DASHBOARD_CERTIFICATES_GENERATED_BY_COURSE, serverProperties.getRedisInsightIndex(),fieldsArray);
+        List<String> avgRatingByCourse = redisCacheMgr.hget(DASHBOARD_COURSE_AVG_RATING, serverProperties.getRedisInsightIndex(),fieldsArray);
+        List<String> enrolmentByCourse = redisCacheMgr.hget(DASHBOARD_ENROLMENT_COUNT_BY_COURSE, serverProperties.getRedisInsightIndex(),fieldsArray);
         if(competenciesByCourse == null)
             competenciesByCourse = new ArrayList<>();
         if(certificatesByCourse ==null)

@@ -211,7 +211,7 @@ public class TrendingServiceImpl implements TrendingService {
         }
         int limit = Optional.ofNullable(request.get(LIMIT)).map(l -> (Integer) l).orElse(0);
         String[] newFieldsArray = redisKeyNameMap.keySet().toArray(new String[0]);
-        List<String> trendingCoursesAndPrograms = redisCacheMgr.hget(redisKey, serverProperties.getRedisDashboardCourseLiveCount(),newFieldsArray);
+        List<String> trendingCoursesAndPrograms = redisCacheMgr.hget(redisKey, serverProperties.getRedisInsightIndex(),newFieldsArray);
         Map<String, List<String>> typeList = new HashMap<>();
         if  (CollectionUtils.isNotEmpty(trendingCoursesAndPrograms)) {
             for (int i = 0; i < newFieldsArray.length; i++) {
