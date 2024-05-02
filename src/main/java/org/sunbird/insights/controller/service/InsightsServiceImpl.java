@@ -156,7 +156,7 @@ public class InsightsServiceImpl implements InsightsService {
         ArrayList<String> certificateOrgs= new ArrayList<>();
         certificateOrgs.add(ACROSS);
         ArrayList<Object> nudges = new ArrayList<>();
-        List<String> competenciesByCourse =  redisCacheMgr.hget(DASHBOARD_COMPETENCIES_COUNT_BY_COURSE, serverProperties.getRedisInsightIndex(), fieldsArray);
+        List<String> competenciesByCourse =  redisCacheMgr.hget(DASHBOARD_LIVE_COURSE_COUNT, serverProperties.getRedisInsightIndex(), fieldsArray);
         List<String> certificatesByCourse = redisCacheMgr.hget(DASHBOARD_CERTIFICATES_GENERATED_BY_COURSE, serverProperties.getRedisInsightIndex(),fieldsArray);
         List<String> avgRatingByCourse = redisCacheMgr.hget(DASHBOARD_COURSE_AVG_RATING, serverProperties.getRedisInsightIndex(),fieldsArray);
         List<String> enrolmentByCourse = redisCacheMgr.hget(DASHBOARD_ENROLMENT_COUNT_BY_COURSE, serverProperties.getRedisInsightIndex(),fieldsArray);

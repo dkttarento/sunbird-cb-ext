@@ -186,7 +186,7 @@ public class TrendingServiceImpl implements TrendingService {
 
         String org = (filter).get(ORGANISATION) == null ? "" : ((String) (filter).get(ORGANISATION));
         String designation = ((String) filter.get(DESIGNATION));
-        String redisKey = DASHBOARD_LIVE_COURSE_COUNT;
+        String redisKey = TRENDING_COURSES_REDIS_KEY;
         Map<String, String> redisKeyNameMap = new HashMap<>();
         if (StringUtils.isBlank(designation)) {
             designation = "";
@@ -199,7 +199,7 @@ public class TrendingServiceImpl implements TrendingService {
         for (String contextType : contextTypeList) {
             if (Constants.ACBP_KEY.equalsIgnoreCase(contextType)) {
                 isAcbpEnabled = true;
-                redisKey = DASHBOARD_LIVE_COURSE_COUNT;
+                redisKey = TRENDING_COURSES_REDIS_KEY;
                 redisKeyNameMap.put(org + COLON + ACBP_KEY + COLON + ALL_USER_KEY, contextType);
                 if (StringUtils.isNotBlank(designation)) {
                     redisKeyNameMap.put(org + COLON + ACBP_KEY + COLON + designation, contextType);
