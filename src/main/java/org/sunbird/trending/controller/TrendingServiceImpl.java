@@ -180,9 +180,9 @@ public class TrendingServiceImpl implements TrendingService {
 
     public Map<String, Object> trendingContentSearch(Map<String, Object> requestBody, String token) throws Exception {
 
-        HashMap<String, Object> request = requestBody.get(REQUEST) ==null ? new HashMap<>() : (HashMap<String, Object>) requestBody.get(REQUEST);
-        HashMap<String, Object> filter = request.get(FILTERS) ==null ? new HashMap<>() : ((HashMap<String, Object>) request.get(FILTERS));
-        ArrayList<String> contextTypeList = (filter).get(CONTEXT_TYPE) == null ?  new ArrayList<>() : ((ArrayList<String>) (filter).get(CONTEXT_TYPE));
+        HashMap<String, Object> request = requestBody.get(REQUEST) == null ? new HashMap<>() : (HashMap<String, Object>) requestBody.get(REQUEST);
+        HashMap<String, Object> filter = request.get(FILTERS) == null ? new HashMap<>() : ((HashMap<String, Object>) request.get(FILTERS));
+        ArrayList<String> contextTypeList = (filter).get(CONTEXT_TYPE) == null ? new ArrayList<>() : ((ArrayList<String>) (filter).get(CONTEXT_TYPE));
 
         String org = (filter).get(ORGANISATION) == null ? "" : ((String) (filter).get(ORGANISATION));
         String designation = ((String) filter.get(DESIGNATION));
@@ -211,9 +211,9 @@ public class TrendingServiceImpl implements TrendingService {
         }
         int limit = Optional.ofNullable(request.get(LIMIT)).map(l -> (Integer) l).orElse(0);
         String[] newFieldsArray = redisKeyNameMap.keySet().toArray(new String[0]);
-        List<String> trendingCoursesAndPrograms = redisCacheMgr.hget(redisKey, serverProperties.getRedisInsightIndex(),newFieldsArray);
+        List<String> trendingCoursesAndPrograms = redisCacheMgr.hget(redisKey, serverProperties.getRedisInsightIndex(), newFieldsArray);
         Map<String, List<String>> typeList = new HashMap<>();
-        if  (CollectionUtils.isNotEmpty(trendingCoursesAndPrograms)) {
+        if (CollectionUtils.isNotEmpty(trendingCoursesAndPrograms)) {
             for (int i = 0; i < newFieldsArray.length; i++) {
                 String nameValue = redisKeyNameMap.get(newFieldsArray[i]);
                 if (typeList.containsKey(nameValue)) {
@@ -226,15 +226,15 @@ public class TrendingServiceImpl implements TrendingService {
             }
         }
         List<String> searchIds = typeList.values().stream().flatMap(List::stream).collect(Collectors.toList());
-        Map<String, Object> compositeSearchRes ;
+        Map<String, Object> compositeSearchRes;
         List<Map<String, Object>> contentList = new ArrayList<>();
         Map<String, Object> resultMap = new HashMap<>();
-        if(CollectionUtils.isNotEmpty(searchIds)) {
+        if (CollectionUtils.isNotEmpty(searchIds)) {
             compositeSearchRes = compositeSearch(searchIds, token);
-            if(null == compositeSearchRes)
+            if (null == compositeSearchRes)
                 compositeSearchRes = new HashMap<>();
-            resultMap =   compositeSearchRes.get(RESULT) ==null ? new HashMap<>() :  (Map<String, Object>) compositeSearchRes.get(RESULT) ;
-            contentList = resultMap.get(CONTENT) ==null ? new ArrayList<>() :  (List<Map<String, Object>>) resultMap.get(CONTENT);
+            resultMap = compositeSearchRes.get(RESULT) == null ? new HashMap<>() : (Map<String, Object>) compositeSearchRes.get(RESULT);
+            contentList = resultMap.get(CONTENT) == null ? new ArrayList<>() : (List<Map<String, Object>>) resultMap.get(CONTENT);
         }
         Map<String, Object> contentMap = new HashMap<>();
         for (Map<String, Object> content : contentList) {
