@@ -3,6 +3,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.sunbird.common.model.SBApiResponse;
 import org.sunbird.common.util.Constants;
 import static org.sunbird.common.util.Constants.*;
 import java.util.*;
@@ -22,11 +23,11 @@ public class TrendingController {
     }
 
     @PostMapping("/microsite/topFeatured/content/search")
-    public ResponseEntity<Map<String, Object>> trendingContentSearch(
+    public ResponseEntity<SBApiResponse> trendingContentSearch(
             @RequestBody Map<String, Object> requestBody,
             @RequestHeader(X_AUTH_TOKEN) String token,@RequestHeader(X_AUTH_USER_ORG_ID)String userOrgId) throws Exception {
 
-        Map<String, Object> compositeSearchRes = trendingService.trendingContentSearch(requestBody,token);
-        return new ResponseEntity<>(compositeSearchRes, HttpStatus.OK);
+        SBApiResponse response = trendingService.trendingContentSearch(requestBody,token);
+        return new ResponseEntity<>(response, response.getResponseCode());
     }
 }

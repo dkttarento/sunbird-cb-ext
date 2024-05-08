@@ -5,6 +5,7 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.sunbird.cache.RedisCacheMgr;
 import org.sunbird.common.model.SBApiResponse;
@@ -178,84 +179,72 @@ public class TrendingServiceImpl implements TrendingService {
         return "";
     }
 
-    public Map<String, Object> trendingContentSearch(Map<String, Object> requestBody, String token) throws Exception {
+    public SBApiResponse trendingContentSearch(Map<String, Object> requestBody, String token) throws Exception {
+       SBApiResponse response = ProjectUtil.createDefaultResponse(Constants.MICROSITE_TOP_FEATURE_CONTENT_API);
+       try {
+           HashMap<String, Object> request = requestBody.containsKey(REQUEST) ? (HashMap<String, Object>) requestBody.get(REQUEST) : new HashMap<>();
+           if (request.isEmpty()) {
+               response.getParams().setStatus(Constants.FAILED);
+               response.put(MESSAGE, "Request is Missing");
+               response.setResponseCode(HttpStatus.BAD_REQUEST);
+               return response;
+           }
+           HashMap<String, Object> filter = request.get(FILTERS) == null ? new HashMap<>() : ((HashMap<String, Object>) request.get(FILTERS));
+           if (filter.isEmpty()) {
+               response.getParams().setStatus(Constants.FAILED);
+               response.put(MESSAGE, "Filter is Missing");
+               response.setResponseCode(HttpStatus.BAD_REQUEST);
+               return response;
+           }
+           List<String> contextTypeList = new ArrayList<>();
+           if (CollectionUtils.isNotEmpty(contextTypeList)) {
+               response.getParams().setStatus(Constants.FAILED);
+               response.put(MESSAGE, "ContextType is Missing");
+               response.setResponseCode(HttpStatus.BAD_REQUEST);
+               return response;
+           }
+           String org = (filter).get(ORGANISATION) == null ? "" : ((String) (filter).get(ORGANISATION));
+           if (org.isEmpty()) {
+               response.getParams().setStatus(Constants.FAILED);
+               response.put(MESSAGE, "Organization is Missing");
+               response.setResponseCode(HttpStatus.BAD_REQUEST);
+               return response;
+           }
+           Map<String, String> payloadToRedisKeyMapping = serverProperties.getPayloadToRedisKeyMapping();
+           contextTypeList.addAll(payloadToRedisKeyMapping.keySet());
+           Map<String, Object> aggregateData = new HashMap<>();
+           List<String> topContentRedis;
+           List<String> limitCourses;
+           int limit = Optional.ofNullable(request.get(LIMIT)).map(l -> (Integer) l).orElse(0);
+           for (String contextType : contextTypeList) {
+               String contextTypeValue = payloadToRedisKeyMapping.get(contextType);
+               topContentRedis = redisCacheMgr.hget(contextTypeValue, serverProperties.getRedisInsightIndex(), new String[]{org});
+               limitCourses = this.fetchIds(topContentRedis.get(0), limit, "");
+               if (CollectionUtils.isNotEmpty(limitCourses) && null != limitCourses.get(0)) {
+                   aggregateData.put(contextType, limitCourses);
+               }
+           }
+           Map<String, Object> compositeSearchRes;
+           List<Map<String, Object>> contentList = new ArrayList<>();
+           Map<String, Object> resultMap;
+           if (!aggregateData.isEmpty()) {
+               List<String> compositeKeyList = new ArrayList<>(payloadToRedisKeyMapping.keySet());
+               for (int i = 0; i < aggregateData.size(); i++) {
+                   List<String> searchIds = (List<String>) aggregateData.get(compositeKeyList.get(i));
+                   compositeSearchRes = compositeSearch(searchIds, token);
+                   if (null == compositeSearchRes)
+                       compositeSearchRes = new HashMap<>();
+                   resultMap = compositeSearchRes.get(RESULT) == null ? new HashMap<>() : (Map<String, Object>) compositeSearchRes.get(RESULT);
+                   contentList = resultMap.get(CONTENT) == null ? new ArrayList<>() : (List<Map<String, Object>>) resultMap.get(CONTENT);
+               }
+           }
+           response.put(RESPONSE, contentList);
+       } catch (Exception e) {
+           response.getParams().setStatus(Constants.FAILED);
+           response.getParams().setErrmsg(e.getMessage());
+           response.setResponseCode(HttpStatus.INTERNAL_SERVER_ERROR);
+       }
+       return response;
+   }
 
-        HashMap<String, Object> request = requestBody.get(REQUEST) == null ? new HashMap<>() : (HashMap<String, Object>) requestBody.get(REQUEST);
-        HashMap<String, Object> filter = request.get(FILTERS) == null ? new HashMap<>() : ((HashMap<String, Object>) request.get(FILTERS));
-        ArrayList<String> contextTypeList = (filter).get(CONTEXT_TYPE) == null ? new ArrayList<>() : ((ArrayList<String>) (filter).get(CONTEXT_TYPE));
-
-        String org = (filter).get(ORGANISATION) == null ? "" : ((String) (filter).get(ORGANISATION));
-        String designation = ((String) filter.get(DESIGNATION));
-        String redisKey = TRENDING_COURSES_REDIS_KEY;
-        Map<String, String> redisKeyNameMap = new HashMap<>();
-        if (StringUtils.isBlank(designation)) {
-            designation = "";
-        } else {
-            designation = designation.toLowerCase();
-        }
-
-        boolean isAcbpEnabled = false;
-        List<String> updatedContextTypeList = new ArrayList<>();
-        for (String contextType : contextTypeList) {
-            if (Constants.ACBP_KEY.equalsIgnoreCase(contextType)) {
-                isAcbpEnabled = true;
-                redisKey = TRENDING_COURSES_REDIS_KEY;
-                redisKeyNameMap.put(org + COLON + ACBP_KEY + COLON + ALL_USER_KEY, contextType);
-                if (StringUtils.isNotBlank(designation)) {
-                    redisKeyNameMap.put(org + COLON + ACBP_KEY + COLON + designation, contextType);
-                }
-            } else {
-                updatedContextTypeList.add(contextType);
-                redisKeyNameMap.put(org + COLON + contextType, contextType);
-            }
-        }
-        int limit = Optional.ofNullable(request.get(LIMIT)).map(l -> (Integer) l).orElse(0);
-        String[] newFieldsArray = redisKeyNameMap.keySet().toArray(new String[0]);
-        List<String> trendingCoursesAndPrograms = redisCacheMgr.hget(redisKey, serverProperties.getRedisInsightIndex(), newFieldsArray);
-        Map<String, List<String>> typeList = new HashMap<>();
-        if (CollectionUtils.isNotEmpty(trendingCoursesAndPrograms)) {
-            for (int i = 0; i < newFieldsArray.length; i++) {
-                String nameValue = redisKeyNameMap.get(newFieldsArray[i]);
-                if (typeList.containsKey(nameValue)) {
-                    List<String> existingList = typeList.get(nameValue);
-                    List<String> newList = fetchIds(trendingCoursesAndPrograms.get(i), limit, newFieldsArray[i]);
-                    existingList.addAll(newList);
-                } else {
-                    typeList.put(nameValue, fetchIds(trendingCoursesAndPrograms.get(i), limit, newFieldsArray[i]));
-                }
-            }
-        }
-        List<String> searchIds = typeList.values().stream().flatMap(List::stream).collect(Collectors.toList());
-        Map<String, Object> compositeSearchRes;
-        List<Map<String, Object>> contentList = new ArrayList<>();
-        Map<String, Object> resultMap = new HashMap<>();
-        if (CollectionUtils.isNotEmpty(searchIds)) {
-            compositeSearchRes = compositeSearch(searchIds, token);
-            if (null == compositeSearchRes)
-                compositeSearchRes = new HashMap<>();
-            resultMap = compositeSearchRes.get(RESULT) == null ? new HashMap<>() : (Map<String, Object>) compositeSearchRes.get(RESULT);
-            contentList = resultMap.get(CONTENT) == null ? new ArrayList<>() : (List<Map<String, Object>>) resultMap.get(CONTENT);
-        }
-        Map<String, Object> contentMap = new HashMap<>();
-        for (Map<String, Object> content : contentList) {
-            String key = (String) content.get(IDENTIFIER);
-            if (!contentMap.containsKey(key)) {
-                if (isAcbpEnabled) {
-                    content.put(CBP_MANUAL_COURSES_END_DATE, getEndDateFormat());
-                }
-                contentMap.put(key, content);
-            } else {
-                logger.info("Duplicate key detected: {}", key);
-            }
-        }
-        Map<String, List<Object>> resultContentMap = typeList.entrySet().stream()
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        entry -> entry.getValue().stream().map(contentMap::get).filter(Objects::nonNull).collect(Collectors.toList())
-                ));
-        resultMap.remove(CONTENT);
-        resultMap.remove(COUNT);
-        resultMap.put(RESPONSE, resultContentMap);
-        return resultMap;
-    }
 }

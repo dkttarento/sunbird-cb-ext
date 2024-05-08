@@ -744,6 +744,9 @@ public class CbExtServerProperties {
 	@Value("${label.dashboard.course.enrolment.count}")
 	private String labelDashboardCourseEnrolmentCount;
 
+	@Value("#{${payload_to_redis_key_mapping}}")
+	private Map<String, String> payloadToRedisKeyMapping;
+
 	public boolean qListFromCacheEnabled() {
 		return qListFromCacheEnabled;
 	}
@@ -2629,5 +2632,13 @@ public class CbExtServerProperties {
 
 	public void setLabelDashboardCourseEnrolmentCount(String labelDashboardCourseEnrolmentCount) {
 		this.labelDashboardCourseEnrolmentCount = labelDashboardCourseEnrolmentCount;
+	}
+
+	public Map<String, String> getPayloadToRedisKeyMapping() {
+		return payloadToRedisKeyMapping;
+	}
+
+	public void setPayloadToRedisKeyMapping(Map<String, String> payloadToRedisKeyMapping) {
+		this.payloadToRedisKeyMapping = payloadToRedisKeyMapping;
 	}
 }
