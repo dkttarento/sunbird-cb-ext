@@ -1055,7 +1055,6 @@ public class Constants {
 	public static final String COURSE_ID_KEY = "courseID";
 	public static final String USER_ID_KEY = "userID";
 	public static final String MICROSITE_TOP_FEATURE_CONTENT_API = "api.microsite.topfeatured.content";
-	public static final String MICROSITES_DASHBOARD_TOP_COURSES="dashboard_top_10_courses_by_completion_by_course_org";
 
 	private Constants() {
 		throw new IllegalStateException("Utility class");
