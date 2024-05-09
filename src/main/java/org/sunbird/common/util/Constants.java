@@ -137,6 +137,7 @@ public class Constants {
 	public static final String API_GET_EXPLORE_COURSE_DETAIL = "api.explore.course";
 	public static final String API_REFRESH_EXPLORE_COURSE_DETAIL = "api.refresh.explore.course.list";
 	public static final String API_GET_MASTER_DATA = "api.get.master.data";
+	public static final String API_GET_USER_PROGRESS = "api.get.user.progress";
 
 	public static final String ORG_PROFILE_UPDATE = "org.profile.update";
 	public static final String ID = "id";
@@ -1048,12 +1049,15 @@ public class Constants {
 	public static final String AVG_RATING_MICRO_SITE="avg-rating";
 	public static final String TOTAL_ENROLMENTS ="total-enrolments";
 	public static final String TOTAL_CERTIFICATES ="total-certificates";
-    public static final String TOP_COMMENTS_ORG_REDIS_KEY = "cbp_top_10_users_reviews_by_org";
+  public static final String TOP_COMMENTS_ORG_REDIS_KEY = "cbp_top_10_users_reviews_by_org";
 	public static final String PROFILE_IMAGE_URL = "profileImageUrl";
 	public static final String API_TOD_COMMENT_FOR_USER = "api.rating.top.v1.comment";
 	public static final String CONTENT_INFO = "contentInfo";
 	public static final String COURSE_ID_KEY = "courseID";
 	public static final String USER_ID_KEY = "userID";
+	public static final String PAGE_ID = "pageId";
+	public static final String USERS_LIST = "userList";
+	public static final String TOTAL_COUNT = "totalCount";
 
 	private Constants() {
 		throw new IllegalStateException("Utility class");
