@@ -22,7 +22,7 @@ public class TrendingController {
         return new ResponseEntity<>(compositeSearchRes, HttpStatus.OK);
     }
 
-    @PostMapping("/microsite/topFeatured/content/search")
+    @PostMapping("/content/aggregation/search")
     public ResponseEntity<SBApiResponse> trendingContentSearch(
             @RequestBody Map<String, Object> requestBody,
             @RequestHeader(X_AUTH_TOKEN) String token,@RequestHeader(X_AUTH_USER_ORG_ID)String userOrgId) throws Exception {

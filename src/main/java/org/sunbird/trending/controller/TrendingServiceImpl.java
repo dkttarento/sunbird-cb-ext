@@ -1,14 +1,17 @@
 package org.sunbird.trending.controller;
 
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.sunbird.cache.RedisCacheMgr;
 import org.sunbird.common.model.SBApiResponse;
+import org.sunbird.common.service.ContentService;
 import org.sunbird.common.service.OutboundRequestHandlerServiceImpl;
 import org.sunbird.common.util.CbExtServerProperties;
 import org.sunbird.common.util.Constants;
@@ -30,6 +33,8 @@ public class TrendingServiceImpl implements TrendingService {
 
     @Autowired
     RedisCacheMgr redisCacheMgr;
+    @Autowired
+    ContentService contentService;
 
     private Logger logger = LoggerFactory.getLogger(getClass().getName());
 
@@ -182,63 +187,70 @@ public class TrendingServiceImpl implements TrendingService {
     public SBApiResponse trendingContentSearch(Map<String, Object> requestBody, String token) throws Exception {
        SBApiResponse response = ProjectUtil.createDefaultResponse(Constants.MICROSITE_TOP_FEATURE_CONTENT_API);
        try {
-           HashMap<String, Object> request = requestBody.containsKey(REQUEST) ? (HashMap<String, Object>) requestBody.get(REQUEST) : new HashMap<>();
-           if (request.isEmpty()) {
+           Map<String, Object> request = requestBody.containsKey(REQUEST) ? (Map<String, Object>) requestBody.get(REQUEST) : MapUtils.EMPTY_MAP;
+           if (MapUtils.isEmpty(request)) {
                response.getParams().setStatus(Constants.FAILED);
                response.put(MESSAGE, "Request is Missing");
                response.setResponseCode(HttpStatus.BAD_REQUEST);
                return response;
            }
-           HashMap<String, Object> filter = request.get(FILTERS) == null ? new HashMap<>() : ((HashMap<String, Object>) request.get(FILTERS));
-           if (filter.isEmpty()) {
+           Map<String, Object> filter = request.get(FILTERS) == null ? MapUtils.EMPTY_MAP : ((Map<String, Object>) request.get(FILTERS));
+           if (MapUtils.isEmpty(filter)) {
                response.getParams().setStatus(Constants.FAILED);
                response.put(MESSAGE, "Filter is Missing");
                response.setResponseCode(HttpStatus.BAD_REQUEST);
                return response;
            }
-           List<String> contextTypeList = new ArrayList<>();
-           if (CollectionUtils.isNotEmpty(contextTypeList)) {
+           List<String> contextTypeList = (filter).get(CONTEXT_TYPE) == null ? Collections.emptyList() : ((List<String>) (filter).get(CONTEXT_TYPE));
+           if (!CollectionUtils.isNotEmpty(contextTypeList)) {
                response.getParams().setStatus(Constants.FAILED);
                response.put(MESSAGE, "ContextType is Missing");
                response.setResponseCode(HttpStatus.BAD_REQUEST);
                return response;
            }
            String org = (filter).get(ORGANISATION) == null ? "" : ((String) (filter).get(ORGANISATION));
-           if (org.isEmpty()) {
+           if (StringUtils.isEmpty(org)) {
                response.getParams().setStatus(Constants.FAILED);
                response.put(MESSAGE, "Organization is Missing");
                response.setResponseCode(HttpStatus.BAD_REQUEST);
                return response;
            }
-           Map<String, String> payloadToRedisKeyMapping = serverProperties.getPayloadToRedisKeyMapping();
-           contextTypeList.addAll(payloadToRedisKeyMapping.keySet());
-           Map<String, Object> aggregateData = new HashMap<>();
-           List<String> topContentRedis;
-           List<String> limitCourses;
            int limit = Optional.ofNullable(request.get(LIMIT)).map(l -> (Integer) l).orElse(0);
+           if (limit == 0) {
+               response.getParams().setStatus(Constants.FAILED);
+               response.put(MESSAGE, "Limit value is Missing");
+               response.setResponseCode(HttpStatus.BAD_REQUEST);
+               return response;
+           }
+           Map<String, String> payloadToRedisKeyMapping = serverProperties.getPayloadToRedisKeyMapping();
+           Map<String, Object> aggregateData = new HashMap<>();
+           List<String> contentData;
+           List<String> limitCourses;
+
            for (String contextType : contextTypeList) {
                String contextTypeValue = payloadToRedisKeyMapping.get(contextType);
-               topContentRedis = redisCacheMgr.hget(contextTypeValue, serverProperties.getRedisInsightIndex(), new String[]{org});
-               limitCourses = this.fetchIds(topContentRedis.get(0), limit, "");
+               contentData = redisCacheMgr.hget(contextTypeValue, serverProperties.getRedisInsightIndex(), new String[]{org});
+               limitCourses = this.fetchIds(contentData.get(0), limit, "");
                if (CollectionUtils.isNotEmpty(limitCourses) && null != limitCourses.get(0)) {
                    aggregateData.put(contextType, limitCourses);
                }
            }
-           Map<String, Object> compositeSearchRes;
-           List<Map<String, Object>> contentList = new ArrayList<>();
-           Map<String, Object> resultMap;
+           List<List<Map<String, Object>>> resultData = new ArrayList<>();
            if (!aggregateData.isEmpty()) {
                List<String> compositeKeyList = new ArrayList<>(payloadToRedisKeyMapping.keySet());
                for (int i = 0; i < aggregateData.size(); i++) {
                    List<String> searchIds = (List<String>) aggregateData.get(compositeKeyList.get(i));
-                   compositeSearchRes = compositeSearch(searchIds, token);
-                   if (null == compositeSearchRes)
-                       compositeSearchRes = new HashMap<>();
-                   resultMap = compositeSearchRes.get(RESULT) == null ? new HashMap<>() : (Map<String, Object>) compositeSearchRes.get(RESULT);
-                   contentList = resultMap.get(CONTENT) == null ? new ArrayList<>() : (List<Map<String, Object>>) resultMap.get(CONTENT);
+                   List<Map<String, Object>> contentList = new ArrayList<>();
+                   for (String searchId : searchIds) {
+                       Map<String, Object> contentResponse = contentService.readContentFromCache(searchId, null);
+                       if (MapUtils.isNotEmpty(contentResponse)) {
+                           contentList.add(contentResponse);
+                       }
+                   }
+                   resultData.add(contentList);
                }
            }
-           response.put(RESPONSE, contentList);
+           response.put(RESPONSE, resultData);
        } catch (Exception e) {
            response.getParams().setStatus(Constants.FAILED);
            response.getParams().setErrmsg(e.getMessage());
