@@ -34,6 +34,7 @@ public class TrendingServiceImpl implements TrendingService {
 
     @Autowired
     RedisCacheMgr redisCacheMgr;
+
     @Autowired
     ContentService contentService;
 
