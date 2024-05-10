@@ -744,8 +744,8 @@ public class CbExtServerProperties {
 	@Value("${label.dashboard.course.enrolment.count}")
 	private String labelDashboardCourseEnrolmentCount;
 
-	@Value("#{${payload_to_redis_key_mapping}}")
-	private Map<String, String> payloadToRedisKeyMapping;
+	@Value("#{${payload.to.redis.key.mapping}}")
+	private String payloadToRedisKeyMapping;
 
 	@Value("${cloud.org.store.folder.name}")
 	private String orgStoreFolderName;
@@ -2645,11 +2645,11 @@ public class CbExtServerProperties {
 		this.orgStoreFolderName = orgStoreFolderName;
 	}
 
-	public Map<String, String> getPayloadToRedisKeyMapping() {
+	public String getPayloadToRedisKeyMapping() {
 		return payloadToRedisKeyMapping;
 	}
 
-	public void setPayloadToRedisKeyMapping(Map<String, String> payloadToRedisKeyMapping) {
+	public void setPayloadToRedisKeyMapping(String payloadToRedisKeyMapping) {
 		this.payloadToRedisKeyMapping = payloadToRedisKeyMapping;
 	}
 }
