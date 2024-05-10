@@ -1,5 +1,7 @@
 package org.sunbird.trending.controller;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang.StringUtils;
@@ -8,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.util.ObjectUtils;
 import org.sunbird.cache.RedisCacheMgr;
 import org.sunbird.common.model.SBApiResponse;
 import org.sunbird.common.service.ContentService;
@@ -33,6 +34,7 @@ public class TrendingServiceImpl implements TrendingService {
 
     @Autowired
     RedisCacheMgr redisCacheMgr;
+
     @Autowired
     ContentService contentService;
 
@@ -222,7 +224,11 @@ public class TrendingServiceImpl implements TrendingService {
                response.setResponseCode(HttpStatus.BAD_REQUEST);
                return response;
            }
-           Map<String, String> payloadToRedisKeyMapping = serverProperties.getPayloadToRedisKeyMapping();
+           String payloadToRedisKeyMappingString = serverProperties.getPayloadToRedisKeyMapping();
+           ObjectMapper mapper = new ObjectMapper();
+           Map<String, String> payloadToRedisKeyMapping;
+           payloadToRedisKeyMapping = mapper.readValue(payloadToRedisKeyMappingString, new TypeReference<Map<String, String>>() {
+           });
            Map<String, Object> aggregateData = new HashMap<>();
            List<String> contentData;
            List<String> limitCourses;
