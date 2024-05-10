@@ -732,21 +732,6 @@ public class CbExtServerProperties {
 	@Value("${event-update-api}")
 	private String eventUpdateAPI;
 
-	@Value("${redis.dashboard.course.live.count.index}")
-	private Integer redisDashboardCourseLiveCount;
-
-	@Value("${redis.dashboard.course.certificate.count.index}")
-	private Integer redisDashboardCertificateCount;
-
-	@Value("${redis.dashboard.course.average.rating.count.index}")
-	private Integer redisDashboardCourseAverageRatingCount;
-
-	@Value("${redis.dashboard.course.enrolment.count.index}")
-	private Integer redisDashboardEnrolmentCount;
-
-	@Value("${redis.dashboard.course.competencies.count.index}")
-	private Integer redisDashboardCompetenciesCount;
-
 	@Value("${label.dashboard.course.average.rating.count}")
 	private String labelDashboardCourseAverageRatingCount;
 
@@ -758,6 +743,9 @@ public class CbExtServerProperties {
 
 	@Value("${label.dashboard.course.enrolment.count}")
 	private String labelDashboardCourseEnrolmentCount;
+
+	@Value("#{${payload_to_redis_key_mapping}}")
+	private Map<String, String> payloadToRedisKeyMapping;
 
 	@Value("${cloud.org.store.folder.name}")
 	private String orgStoreFolderName;
@@ -2617,46 +2605,6 @@ public class CbExtServerProperties {
 		this.eventUpdateAPI = eventUpdateAPI;
 	}
 
-	public Integer getRedisDashboardCourseLiveCount() {
-		return redisDashboardCourseLiveCount;
-	}
-
-	public void setRedisDashboardCourseLiveCount(Integer redisDashboardCourseLiveCount) {
-		this.redisDashboardCourseLiveCount = Integer.valueOf(String.valueOf(redisDashboardCourseLiveCount));
-	}
-
-	public Integer getRedisDashboardCertificateCount() {
-		return redisDashboardCertificateCount;
-	}
-
-	public void setRedisDashboardCertificateCount(Integer redisDashboardCertificateCount) {
-		this.redisDashboardCertificateCount = Integer.valueOf(String.valueOf(redisDashboardCertificateCount));
-	}
-
-	public Integer getRedisDashboardCourseAverageRatingCount() {
-		return redisDashboardCourseAverageRatingCount;
-	}
-
-	public void setRedisDashboardCourseAverageRatingCount(Integer redisDashboardCourseAverageRatingCount) {
-		this.redisDashboardCourseAverageRatingCount = redisDashboardCourseAverageRatingCount;
-	}
-
-	public Integer getRedisDashboardEnrolmentCount() {
-		return redisDashboardEnrolmentCount;
-	}
-
-	public void setRedisDashboardEnrolmentCount(Integer redisDashboardEnrolmentCount) {
-		this.redisDashboardEnrolmentCount = redisDashboardEnrolmentCount;
-	}
-
-	public Integer getRedisDashboardCompetenciesCount() {
-		return redisDashboardCompetenciesCount;
-	}
-
-	public void setRedisDashboardCompetenciesCount(Integer redisDashboardCompetenciesCount) {
-		this.redisDashboardCompetenciesCount = Integer.valueOf(String.valueOf(redisDashboardCompetenciesCount));
-	}
-
 	public String getLabelDashboardCourseAverageRatingCount() {
 		return labelDashboardCourseAverageRatingCount;
 	}
@@ -2695,5 +2643,13 @@ public class CbExtServerProperties {
 
 	public void setOrgStoreFolderName(String orgStoreFolderName) {
 		this.orgStoreFolderName = orgStoreFolderName;
+	}
+
+	public Map<String, String> getPayloadToRedisKeyMapping() {
+		return payloadToRedisKeyMapping;
+	}
+
+	public void setPayloadToRedisKeyMapping(Map<String, String> payloadToRedisKeyMapping) {
+		this.payloadToRedisKeyMapping = payloadToRedisKeyMapping;
 	}
 }
