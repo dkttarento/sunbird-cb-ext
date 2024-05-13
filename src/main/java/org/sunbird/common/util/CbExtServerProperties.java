@@ -734,20 +734,6 @@ public class CbExtServerProperties {
 
 	@Value("#{${payload.to.redis.key.mapping}}")
 	private String payloadToRedisKeyMapping;
-	@Value("${label.dashboard.course.average.rating.count}")
-	private String labelDashboardCourseAverageRatingCount;
-
-	@Value("${label.dashboard.course.competencies.count}")
-	private String labelDashboardCourseCompetencies;
-
-	@Value("${label.dashboard.course.certificate.count}")
-	private String labelDashboardCourseCertificate;
-
-	@Value("${label.dashboard.course.enrolment.count}")
-	private String labelDashboardCourseEnrolmentCount;
-
-	@Value("#{${payload.to.redis.key.mapping}}")
-	private String payloadToRedisKeyMapping;
 
 	@Value("${cloud.org.store.folder.name}")
 	private String orgStoreFolderName;
@@ -2619,38 +2605,6 @@ public class CbExtServerProperties {
 		this.eventUpdateAPI = eventUpdateAPI;
 	}
 
-	public String getLabelDashboardCourseAverageRatingCount() {
-		return labelDashboardCourseAverageRatingCount;
-	}
-
-	public void setLabelDashboardCourseAverageRatingCount(String labelDashboardCourseAverageRatingCount) {
-		this.labelDashboardCourseAverageRatingCount = labelDashboardCourseAverageRatingCount;
-	}
-
-	public String getLabelDashboardCourseCompetencies() {
-		return labelDashboardCourseCompetencies;
-	}
-
-	public void setLabelDashboardCourseCompetencies(String labelDashboardCourseCompetencies) {
-		this.labelDashboardCourseCompetencies = labelDashboardCourseCompetencies;
-	}
-
-	public String getLabelDashboardCourseCertificate() {
-		return labelDashboardCourseCertificate;
-	}
-
-	public void setLabelDashboardCourseCertificate(String labelDashboardCourseCertificate) {
-		this.labelDashboardCourseCertificate = labelDashboardCourseCertificate;
-	}
-
-	public String getLabelDashboardCourseEnrolmentCount() {
-		return labelDashboardCourseEnrolmentCount;
-	}
-
-	public void setLabelDashboardCourseEnrolmentCount(String labelDashboardCourseEnrolmentCount) {
-		this.labelDashboardCourseEnrolmentCount = labelDashboardCourseEnrolmentCount;
-	}
-
 	public String getOrgStoreFolderName() {
 		return orgStoreFolderName;
 	}
@@ -2665,5 +2619,37 @@ public class CbExtServerProperties {
 
 	public void setPayloadToRedisKeyMapping(String payloadToRedisKeyMapping) {
 		this.payloadToRedisKeyMapping = payloadToRedisKeyMapping;
+	}
+
+	public String getCloudPublicContainerName() {
+		return cloudPublicContainerName;
+	}
+
+	public void setCloudPublicContainerName(String cloudPublicContainerName) {
+		this.cloudPublicContainerName = cloudPublicContainerName;
+	}
+
+	public Map<String, String> getOrganisationInsightFields() {
+		return organisationInsightFields;
+	}
+
+	public void setOrganisationInsightFields(Map<String, String> organisationInsightFields) {
+		this.organisationInsightFields = organisationInsightFields;
+	}
+
+	public Map<String, String> getOrganisationInsightPropertyFields() {
+		return organisationInsightPropertyFields;
+	}
+
+	public void setOrganisationInsightPropertyFields(Map<String, String> organisationInsightPropertyFields) {
+		this.organisationInsightPropertyFields = organisationInsightPropertyFields;
+	}
+
+	public Map<String, String> getOrganisationInsightRedisKeyMapping() {
+		return organisationInsightRedisKeyMapping;
+	}
+
+	public void setOrganisationInsightRedisKeyMapping(Map<String, String> organisationInsightRedisKeyMapping) {
+		this.organisationInsightRedisKeyMapping = organisationInsightRedisKeyMapping;
 	}
 }

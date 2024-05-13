@@ -1049,6 +1049,7 @@ public class Constants {
 	public static final String USERS_LIST = "userList";
 	public static final String TOTAL_COUNT = "totalCount";
 	public static final String MICROSITE_TOP_CONTENT_API = "api.microsite.top.content";
+	public static final String ICON = "icon";
 
 	private Constants() {
 		throw new IllegalStateException("Utility class");
