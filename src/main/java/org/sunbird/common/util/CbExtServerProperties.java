@@ -732,6 +732,8 @@ public class CbExtServerProperties {
 	@Value("${event-update-api}")
 	private String eventUpdateAPI;
 
+	@Value("#{${payload.to.redis.key.mapping}}")
+	private String payloadToRedisKeyMapping;
 	@Value("${label.dashboard.course.average.rating.count}")
 	private String labelDashboardCourseAverageRatingCount;
 
@@ -749,6 +751,18 @@ public class CbExtServerProperties {
 
 	@Value("${cloud.org.store.folder.name}")
 	private String orgStoreFolderName;
+
+	@Value("${cloud.public.store.container.name}")
+	private String cloudPublicContainerName;
+
+	@Value("#{${organisation.insights.fields}}")
+	private Map<String, String> organisationInsightFields;
+
+	@Value("#{${organisation.insights.property.fields}}")
+	private Map<String, String> organisationInsightPropertyFields;
+
+	@Value("#{${organisation.insights.redis.key.mapping}}")
+	private Map<String, String> organisationInsightRedisKeyMapping;
 
 	public boolean qListFromCacheEnabled() {
 		return qListFromCacheEnabled;
